@@ -14,10 +14,9 @@ import java.util.Map;
 
 /**
  * @author hugo Yu
- * @create 2020-07-21
+ * @create 2020-07-26
  */
 public class BaseController {
-
     public static final String CONTENT_TYPE_FORMED = "application/x-www-form-urlencoded";
 
     //定义exceptionHandler解决未被controller层吸收的exception
@@ -33,9 +32,7 @@ public class BaseController {
         } else {
             responseData.put("errCode", EmBusinessError.UNKNOWN_ERROR.getErrorCode());
             responseData.put("errMsg", EmBusinessError.UNKNOWN_ERROR.getErrtMsg());
-
         }
-        return CommonReturnType.creat(responseData, "fail");
+        return CommonReturnType.create(responseData, "fail");
     }
-
 }

@@ -28,7 +28,7 @@ public class ItemDO {
      *
      * @mbg.generated Sat Jul 25 11:00:31 CST 2020
      */
-    private BigDecimal price;
+    private Long price;
 
     /**
      *
@@ -113,7 +113,7 @@ public class ItemDO {
      *
      * @mbg.generated Sat Jul 25 11:00:31 CST 2020
      */
-    public BigDecimal getPrice() {
+    public Long getPrice() {
         return price;
     }
 
@@ -125,7 +125,7 @@ public class ItemDO {
      *
      * @mbg.generated Sat Jul 25 11:00:31 CST 2020
      */
-    public void setPrice(BigDecimal price) {
+    public void setPrice(Long price) {
         this.price = price;
     }
 

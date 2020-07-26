@@ -2,6 +2,7 @@ package com.seckillproject.dao;
 
 import com.seckillproject.dataobject.ItemDO;
 import org.apache.ibatis.annotations.Param;
+import org.w3c.dom.ls.LSException;
 
 import java.util.List;
 
@@ -13,6 +14,7 @@ public interface ItemDOMapper {
      *
      * @mbg.generated Sat Jul 25 11:00:31 CST 2020
      */
+
     int deleteByPrimaryKey(Integer id);
 
     /**

@@ -55,7 +55,7 @@ public class UserController extends BaseController {
         //将登陆凭证加入到用户登录成功的session内,假设用户是单点的session登录；
         this.httpServletRequest.getSession().setAttribute("IS_LOGIN", true);
         this.httpServletRequest.getSession().setAttribute("LOGIN_USER", userModel);
-        return CommonReturnType.creat(null);
+        return CommonReturnType.create(null);
 
 
     }
@@ -86,7 +86,7 @@ public class UserController extends BaseController {
         //密码需要加密
         userModel.setEncrptPassword(this.EncodeByMd5(password));
         userService.register(userModel);
-        return CommonReturnType.creat(null);
+        return CommonReturnType.create(null);
 
     }
 
@@ -116,7 +116,7 @@ public class UserController extends BaseController {
         //将OTP验证码通过短信通道发送给用户，省略,直接将HttpCode打印到控制台上
         System.out.println("telphone=" + telphone + "&otpCode=" + otpCode);
 
-        return CommonReturnType.creat(null);
+        return CommonReturnType.create(null);
     }
 
 
@@ -136,7 +136,7 @@ public class UserController extends BaseController {
         UserVO userVO = convertFromModel(userModel);
 
         //返回通对象
-        return CommonReturnType.creat(userVO);
+        return CommonReturnType.create(userVO);
     }
     //增加一段方法，将UserModel信息返回出去
     private UserVO convertFromModel(UserModel userModel) {
