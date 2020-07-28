@@ -55,15 +55,14 @@ public class ItemController extends BaseController {
         }
         ItemVO itemVO = new ItemVO();
         BeanUtils.copyProperties(itemModel, itemVO);
-//        if (itemModel.getPromoModel() != null) {
-//            itemVO.setPromoStatus(itemModel.getPromoModel().getStatus());
-//            itemVO.setPromoId(itemModel.getPromoModel().getId());
-//            itemVO.setStartDate(itemModel.getPromoModel().getStartDate().
-//                    toString(DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")));
-//            itemVO.setPromoPrice(itemModel.getPromoModel().getPromoItemPrice());
-//        } else {
-//            itemVO.setPromoStatus(0);
-//        }
+        if (itemModel.getPromoModel() != null) {
+            itemVO.setPromoStatus(itemModel.getPromoModel().getStatus());
+            itemVO.setPromoId(itemModel.getPromoModel().getId());
+            itemVO.setStartDate(String.valueOf(itemModel.getPromoModel().getStartDate()));
+            itemVO.setPromoPrice(itemModel.getPromoModel().getPromoItemPrice());
+        } else {
+            itemVO.setPromoStatus(0);
+        }
         return itemVO;
     }
 

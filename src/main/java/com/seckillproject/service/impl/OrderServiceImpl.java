@@ -29,8 +29,6 @@ import java.time.format.DateTimeFormatter;
  */
 @Service
 public class OrderServiceImpl implements OrderService {
-    @Autowired
-    private SequenceDOMapper sequenceDOMapper;
 
     @Autowired
     private ItemService itemService;
@@ -41,9 +39,12 @@ public class OrderServiceImpl implements OrderService {
     @Autowired
     private OrderDOMapper orderDOMapper;
 
+    @Autowired
+    private SequenceDOMapper sequenceDOMapper;
+
     @Override
     @Transactional
-    public OrderModel createOrder(Integer userId, Integer itemId, Integer amount) throws BusinessException {
+    public OrderModel createOrder(Integer userId, Integer itemId, Integer promoId, Integer amount) throws BusinessException {
         //1.校验下单状态，下单的商品是否存在，用户是否合法，购买数量是否正确
         ItemModel itemModel = itemService.getItemById(itemId);
         if (itemModel == null) {
@@ -58,6 +59,16 @@ public class OrderServiceImpl implements OrderService {
         if (amount <= 0 || amount > 99) {
             throw new BusinessException(EmBusinessError.PARAMETER_VALIDATION_ERROR, "数量信息不存在");
         }
+        //校验活动信息
+        if (promoId != null) {
+            //(1)校验对应活动是否存在这个适用商品
+            if (promoId.intValue() != itemModel.getPromoModel().getId()) {
+                throw new BusinessException(EmBusinessError.PARAMETER_VALIDATION_ERROR, "活动信息不正确");
+                //(2)校验活动是否正在进行中
+            } else if (itemModel.getPromoModel().getStatus() != 2) {
+                throw new BusinessException(EmBusinessError.PARAMETER_VALIDATION_ERROR, "活动信息不正确");
+            }
+        }
 
         //2.落单减库存
         boolean result = itemService.decreaseStock(itemId, amount);
@@ -69,20 +80,32 @@ public class OrderServiceImpl implements OrderService {
         OrderModel orderModel = new OrderModel();
         orderModel.setUserId(userId);
         orderModel.setItemId(itemId);
+        orderModel.setPromoId(promoId);
         orderModel.setAmount(amount);
-        orderModel.setItemPrice(itemModel.getPrice());
-        orderModel.setOrderPrice(itemModel.getPrice().multiply(new BigDecimal(amount)));
+
+        if (promoId != null) {
+            orderModel.setItemPrice(itemModel.getPromoModel().getPromoItemPrice());
+        } else {
+            orderModel.setItemPrice(itemModel.getPrice());
+        }
+
+        orderModel.setOrderPrice(orderModel.getItemPrice().multiply(BigDecimal.valueOf(amount)));
 
         //生成交易流水号
         orderModel.setId(generateOrderNo());
         OrderDO orderDO = this.convertFromOrderModel(orderModel);
         orderDOMapper.insertSelective(orderDO);
+        //加上商品的销量
+        itemService.increaseSales(itemId, amount);
 
         //4.返回前端
         return orderModel;
     }
+
     @Transactional(propagation = Propagation.REQUIRES_NEW)
-    String generateOrderNo() {
+    //不管该方法是否在事务中，都会开启一个新的事务，不管外部事务是否成功
+    //最终都会提交掉该事务，为了保证订单号的唯一性，防止下单失败后订单号的回滚
+    private String generateOrderNo() {
         //订单有16位
         StringBuilder stringBuilder = new StringBuilder();
         //前8位为时间信息，年月日
@@ -111,7 +134,6 @@ public class OrderServiceImpl implements OrderService {
         return stringBuilder.toString();
     }
 
-    //将model转成dataobject（DO）的方式
     private OrderDO convertFromOrderModel(OrderModel orderModel) {
         if (orderModel == null) {
             return null;

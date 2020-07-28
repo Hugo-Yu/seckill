@@ -27,11 +27,11 @@ public class BaseController {
         Map<String, Object> responseData = new HashMap<>();
         if (ex instanceof BusinessException) {
             BusinessException businessException = (BusinessException) ex;
-            responseData.put("errCode", businessException.getErrorCode());
-            responseData.put("errMsg", businessException.getErrtMsg());
+            responseData.put("errCode", businessException.getErrCode());
+            responseData.put("errMsg", businessException.getErrMsg());
         } else {
-            responseData.put("errCode", EmBusinessError.UNKNOWN_ERROR.getErrorCode());
-            responseData.put("errMsg", EmBusinessError.UNKNOWN_ERROR.getErrtMsg());
+            responseData.put("errCode", EmBusinessError.UNKNOWN_ERROR.getErrCode());
+            responseData.put("errMsg", EmBusinessError.UNKNOWN_ERROR.getErrMsg());
         }
         return CommonReturnType.create(responseData, "fail");
     }

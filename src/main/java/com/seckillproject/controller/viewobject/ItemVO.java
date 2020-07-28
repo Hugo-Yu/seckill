@@ -1,8 +1,6 @@
 package com.seckillproject.controller.viewobject;
 
 import java.math.BigDecimal;
-//JIEZHI```````````````````````````````````````````````````````--------------------------------------------------------
-//--------------------------------------
 /**
  * @author hugo Yu
  * @create 2020-07-25

@@ -9,7 +9,6 @@ import java.math.BigDecimal;
 
 //用户下单的交易模型
 public class OrderModel {
-
     //交易单号，例如2019052100001212，使用string类型
     private String id;
 
@@ -19,7 +18,10 @@ public class OrderModel {
     //购买的商品id
     private Integer itemId;
 
-    //购买时商品的单价
+    //若非空，则表示是以秒杀商品方式下单
+    private Integer promoId;
+
+    //购买时商品的单价,若promoId非空，则表示是以秒杀商品方式下单
     private BigDecimal itemPrice;
 
     //购买数量
@@ -74,5 +76,13 @@ public class OrderModel {
 
     public void setOrderPrice(BigDecimal orderPrice) {
         this.orderPrice = orderPrice;
+    }
+
+    public Integer getPromoId() {
+        return promoId;
+    }
+
+    public void setPromoId(Integer promoId) {
+        this.promoId = promoId;
     }
 }

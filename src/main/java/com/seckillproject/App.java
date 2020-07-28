@@ -12,7 +12,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 /**
  * Hello world!
- *
+ * Hugo Yu
+ * 项目搭建完成
  */
 @SpringBootApplication(scanBasePackages = {"com.seckillproject"})//把这个app的启动类当成springboot的自动化可以配置启动器
 @RestController

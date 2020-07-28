@@ -5,9 +5,9 @@ package com.seckillproject.error;
  * @create 2020-07-21
  */
 public interface CommonError {
-    public int getErrorCode();
+    public int getErrCode();
 
-    public String getErrtMsg();
+    public String getErrMsg();
 
     public CommonError setErrMsg(String errMsg);
 }
